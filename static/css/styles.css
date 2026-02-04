@@ -202,32 +202,29 @@ body {
 
 #atril-usuario-box {
   display: flex;
-  align-items: center; /* Alinea verticalmente el atril y el botón */
+  flex-direction: row; /* Alineación horizontal */
+  align-items: center;
   justify-content: center;
-  gap: 15px; /* Espacio entre el atril y el botón */
-  margin: 20px 0;
+  gap: 15px;
+  margin: 15px 0;
+  width: 100%;
 }
 
 #atril-user {
   display: flex !important;
   flex-direction: row !important;
-  gap: 5px;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
-  margin: 0; /* Quitamos el margen auto para que no se centre solo */
+  margin: 0 !important; /* Quitamos márgenes que lo centren solo */
 }
 
 #btn-confirmar-cambio {
-  display: none; /* Se activa por JS */
-  background: #27ae60;
+  background-color: #27ae60;
   color: white;
   border: 2px solid white;
   padding: 8px 15px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  white-space: nowrap; /* Evita que el texto se parta en dos líneas */
+  white-space: nowrap; /* Evita que el texto se quiebre */
 }
 
 #btn-confirmar-cambio:hover {
@@ -254,19 +251,14 @@ body {
   background: #add8e6 !important;
 }
 
-.switch-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: white;
-  font-weight: bold;
-}
-
+/* Estilos para el switch de dirección */
 .switch {
   position: relative;
   display: inline-block;
   width: 34px;
   height: 20px;
+  vertical-align: middle;
+  margin: 0 5px;
 }
 
 .switch input {
@@ -275,7 +267,8 @@ body {
   height: 0;
 }
 
-.slider {
+/* El carril gris */
+.switch span {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -284,10 +277,11 @@ body {
   bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
-  border-radius: 34px;
+  border-radius: 20px;
 }
 
-.slider:before {
+/* La bolita blanca */
+.switch span:before {
   position: absolute;
   content: "";
   height: 14px;
@@ -299,10 +293,12 @@ body {
   border-radius: 50%;
 }
 
-input:checked + .slider {
-  background-color: var(--oro);
+/* Color oro cuando se activa (Vertical) */
+input:checked + span {
+  background-color: var(--oro, #f1c40f);
 }
-input:checked + .slider:before {
+
+input:checked + span:before {
   transform: translateX(14px);
 }
 /* ==========================================================================
