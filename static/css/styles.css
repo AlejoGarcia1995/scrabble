@@ -1,0 +1,272 @@
+/* ==========================================================================
+   CONFIGURACIÓN, VARIABLES Y RESET
+   ========================================================================== */
+:root {
+  --oro: #f1c40f;
+  --madera: #3d2b1f;
+  --negro: #1a1a1a;
+  --negro-puro: #000000;
+  --blanco: #ffffff;
+  --celda-size: min(2.25rem, 6vw);
+  --radio-borde: 0.125rem;
+  --radio-capsula: 3.125rem;
+  --transition: all 0.3s ease;
+  --sombra-tablero: 0 1.25rem 3.125rem rgba(0, 0, 0, 0.8);
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 1.6rem;
+  font-family: sans-serif;
+  background: var(--madera)
+    url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+  color: var(--blanco);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   ESTRUCTURA Y POSICIONAMIENTO (FUNDAMENTAL PARA EL DISEÑO)
+   ========================================================================== */
+#mesa-contenedor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100rem;
+  padding: 2rem 0;
+}
+
+#status-superior {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 540px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid var(--oro);
+  border-bottom: none;
+}
+
+/* Puntuación Flotante (Lado derecho) */
+#puntuacion-flotante {
+  position: absolute;
+  right: 15rem;
+  top: 12rem;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 1.25rem;
+  border-radius: 0.9375rem;
+  border: 0.125rem solid var(--oro);
+  min-width: 8.125rem;
+  text-align: center;
+}
+#puntuacion-flotante span {
+  font-size: 2.5rem;
+  color: var(--oro);
+  font-weight: bold;
+  display: block;
+}
+#puntuacion-flotante hr {
+  border: 0;
+  border-top: 1px solid #444;
+  margin: 10px 0;
+}
+
+/* Bolsa (Lado izquierdo) */
+#bolsa-zona {
+  position: absolute;
+  left: 15rem;
+  top: 15rem;
+  text-align: center;
+  cursor: pointer;
+}
+.icono-bolsa {
+  font-size: 4.375rem;
+  filter: drop-shadow(0 0.3125rem 0.625rem var(--negro-puro));
+}
+
+/* ==========================================================================
+   EL CARTEL CPU (CORRECCIÓN image_5ce519.png)
+   ========================================================================== */
+.cartel-anuncio-cpu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--oro);
+  padding: 3rem 6rem;
+  border: 3px solid var(--oro);
+  border-radius: 15px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  z-index: 9999;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   TABLERO Y CONTROLES (image_5cf762.jpg)
+   ========================================================================== */
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(15, var(--celda-size));
+  grid-template-rows: repeat(15, var(--celda-size));
+  gap: 0.125rem;
+  background: var(--negro);
+  padding: 0.75rem;
+  border: 0.625rem solid #2a1d15;
+  box-shadow: var(--sombra-tablero);
+  z-index: 5;
+}
+
+.celda {
+  width: var(--celda-size);
+  height: var(--celda-size);
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border-radius: var(--radio-borde);
+}
+
+.ficha-letra {
+  background: linear-gradient(145deg, #f1d333, #b89b00);
+  color: #2c1a00;
+  font-weight: bold;
+  font-size: calc(var(--celda-size) * 0.75);
+  border: 0.0625rem solid #9c8400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#controles-jugada {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 0.75rem 1.875rem;
+  border-radius: var(--radio-capsula);
+  border: 0.0625rem solid rgba(241, 196, 15, 0.4);
+  margin-top: 1.5rem;
+}
+
+#atril-user {
+    display: flex !important;
+    flex-direction: row !important; /* Fuerza la fila horizontal */
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro para que resalten las fichas */
+    border-radius: 12px;
+    margin: 10px auto;
+    width: fit-content;
+    min-height: 60px;
+}
+
+#btn-confirmar-cambio {
+    display: none; /* Se activa desde el JS */
+    background: #27ae60; /* Verde éxito */
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+}
+
+#btn-confirmar-cambio:hover {
+    background: #2ecc71;
+    transform: scale(1.05);
+}
+
+#info-posicion {
+  min-width: 8rem;
+  line-height: 1.2;
+} /* Espacio para el 10 */
+
+/* Bonos */
+.bono-3P {
+  background: #ff3e3e !important;
+}
+.bono-2P {
+  background: #ff9f9f !important;
+}
+.bono-3L {
+  background: #0066cc !important;
+}
+.bono-2L {
+  background: #add8e6 !important;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (RESTAURADAS PARA EL DISEÑO VERTICAL)
+   ========================================================================== */
+@media (max-width: 62.5rem) {
+  #tablero {
+    grid-template-columns: repeat(15, 6vw);
+    grid-template-rows: repeat(15, 6vw);
+  }
+  .celda {
+    width: 6vw;
+    height: 6vw;
+  }
+
+  #puntuacion-flotante,
+  #bolsa-zona {
+    position: static;
+    transform: none;
+    margin: 1rem 0;
+  }
+
+  #puntuacion-flotante {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    width: auto;
+  }
+
+  #controles-jugada {
+    border-radius: 2rem;
+    padding: 1.5rem;
+    flex-direction: row; /* Mantiene la línea horizontal */
+    width: 95%;
+    justify-content: center;
+  }
+}

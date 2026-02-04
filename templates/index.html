@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrabble AI Pro</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+
+    <div id="mesa-contenedor">
+        
+        <div id="puntuacion-flotante">
+            <div>👤 TÚ</div>
+            <span id="pts-user">0</span>
+            <hr>
+            <div class="cpu-label">🤖 CPU</div>
+            <span id="pts-cpu">0</span>
+        </div>
+
+        <div id="status-superior">
+            <div id="caja-turno">
+                <span class="label-gris">TURNO:</span>
+                <strong id="nombre-turno" class="valor-oro">TÚ</strong>
+            </div>
+            <div id="caja-bolsa">
+                <span class="fichas-texto">💰 FICHAS: <strong id="fichas-bolsa" class="valor-oro">--</strong></span>
+            </div>
+        </div>
+        
+        <div id="bolsa-zona">
+            <div class="icono-bolsa">💰</div>
+            <small>ROBAR / CAMBIAR</small>
+        </div>
+
+        <button id="btn-pasar" class="btn-jugar">PASAR TURNO</button>
+
+        <div id="notificacion-juego" class="hidden">
+            <span id="mensaje-texto"></span>
+        </div>
+        
+        <div id="tablero"></div>
+
+        <div id="atril-usuario-box">
+            <div id="atril-user" class="atril-visual"></div>
+            <button id="btn-confirmar-cambio">CONFIRMAR CANJE</button>
+        </div>
+
+        <div id="controles-jugada">
+            <div id="info-seleccion">
+                <div id="info-posicion">
+                    FILA: <strong id="val-fila">--</strong><br>
+                    COL: <strong id="val-col">--</strong>
+                </div>
+                
+                <div class="switch-container">
+                    <span>H</span>
+                    <label class="switch">
+                        <input type="checkbox" id="dir-switch">
+                        <span class="slider"></span>
+                    </label>
+                    <span>V</span>
+                </div>
+            </div>
+            
+            <input type="text" id="input-palabra" placeholder="Escribe tu palabra..." maxlength="15">
+            <button type="button" id="btn-jugar">JUGAR</button>
+        </div> 
+
+    </div>
+
+    <script src="../static/js/main.js"></script>
+</body>
+</html>
