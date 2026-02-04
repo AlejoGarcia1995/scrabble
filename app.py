@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from model import MotorScrabble
+import os
 
 app = Flask(__name__)
 
@@ -94,5 +95,7 @@ def reiniciar():
 
 
 if __name__ == "__main__":
-    # Ejecución del servidor en modo desarrollo
-    app.run(debug=True, port=5000)
+    # Render usa una variable de entorno llamada PORT
+    port = int(os.environ.get("PORT", 5000))
+    # Importante: bindear a 0.0.0.0 para que sea accesible externamente
+    app.run(host="0.0.0.0", port=port)
