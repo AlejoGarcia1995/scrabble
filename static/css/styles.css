@@ -1,8 +1,9 @@
 /* ==========================================================================
-   CONFIGURACIÓN, VARIABLES Y RESET
+   CONFIGURACIÓN Y RESET
    ========================================================================== */
 :root {
   --oro: #f1c40f;
+  --oro-dark: #d4ac0d;
   --madera: #3d2b1f;
   --negro: #1a1a1a;
   --negro-puro: #000000;
@@ -18,9 +19,10 @@ html {
   font-size: 62.5%;
   box-sizing: border-box;
 }
+
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -36,21 +38,33 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto; /* Simplificado */
 }
 
 /* ==========================================================================
-   ESTRUCTURA Y POSICIONAMIENTO (FUNDAMENTAL PARA EL DISEÑO)
+   ESTRUCTURA Y COMPONENTES REUTILIZABLES
    ========================================================================== */
-#mesa-contenedor {
-  position: relative;
+#mesa-contenedor,
+#atril-usuario-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+#mesa-contenedor {
+  position: relative;
   max-width: 100rem;
   padding: 2rem 0;
+}
+
+/* Agrupación de contenedores con bordes dorados */
+#status-superior,
+#puntuacion-flotante,
+#controles-jugada,
+.cartel-anuncio-cpu {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid var(--oro);
 }
 
 #status-superior {
@@ -58,102 +72,54 @@ body {
   justify-content: space-between;
   width: 100%;
   max-width: 540px;
-  background: rgba(0, 0, 0, 0.8);
   padding: 10px;
   border-radius: 8px 8px 0 0;
-  border: 1px solid var(--oro);
   border-bottom: none;
 }
 
-/* Puntuación Flotante (Lado derecho) */
 #puntuacion-flotante {
   position: absolute;
   right: 15rem;
   top: 12rem;
-  background: rgba(0, 0, 0, 0.9);
   padding: 1.25rem;
   border-radius: 0.9375rem;
-  border: 0.125rem solid var(--oro);
+  border-width: 0.125rem;
   min-width: 8.125rem;
   text-align: center;
 }
+
 #puntuacion-flotante span {
   font-size: 2.5rem;
   color: var(--oro);
   font-weight: bold;
   display: block;
 }
-#puntuacion-flotante hr {
-  border: 0;
-  border-top: 1px solid #444;
-  margin: 10px 0;
-}
 
-/* Bolsa (Lado izquierdo) */
-#bolsa-zona {
-  position: absolute;
-  left: 15rem;
-  top: 15rem;
-  text-align: center;
-  cursor: pointer;
-}
-.icono-bolsa {
-  font-size: 4.375rem;
-  filter: drop-shadow(0 0.3125rem 0.625rem var(--negro-puro));
-}
-
-#btn-jugar {
-  background: #f1c40f !important; /* El color oro */
-  color: black !important;
+/* Botones Principales */
+#btn-jugar,
+#btn-confirmar-cambio {
   border: none;
-  padding: 10px 25px;
-  border-radius: 25px; /* Redondeado */
   font-weight: bold;
-  font-size: 1.4rem;
   cursor: pointer;
-  transition: 0.3s;
+  transition: var(--transition);
   text-transform: uppercase;
 }
 
+#btn-jugar {
+  background: var(--oro);
+  color: black;
+  padding: 10px 25px;
+  border-radius: 25px;
+  font-size: 1.4rem;
+}
+
 #btn-jugar:hover {
-  background: #d4ac0d !important;
+  background: var(--oro-dark);
   transform: scale(1.05);
 }
-/* ==========================================================================
-   EL CARTEL CPU (CORRECCIÓN image_5ce519.png)
-   ========================================================================== */
-.cartel-anuncio-cpu {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.9);
-  color: var(--oro);
-  padding: 3rem 6rem;
-  border: 3px solid var(--oro);
-  border-radius: 15px;
-  font-size: 2.5rem;
-  font-weight: bold;
-  z-index: 9999;
-  text-align: center;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
-  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes popIn {
-  0% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
 
 /* ==========================================================================
-   TABLERO Y CONTROLES (image_5cf762.jpg)
+   TABLERO Y CELDAS
    ========================================================================== */
 #tablero {
   display: grid;
@@ -178,12 +144,12 @@ body {
   border-radius: var(--radio-borde);
 }
 
-/* Resaltar celda seleccionada en el tablero */
-#celda.selected {
-  background-color: rgba(255, 255, 255, 0.3) !important;
-  outline: 3px solid #f1c40f !important; /* Borde amarillo brillante */
+/* Manejo de especificidad para estados de celda (Reemplaza !important) */
+#tablero .celda.selected {
+  background-color: rgba(255, 255, 255, 0.3);
+  outline: 3px solid var(--oro);
   outline-offset: -3px;
-  box-shadow: 0 0 15px #f1c40f;
+  box-shadow: 0 0 15px var(--oro);
   z-index: 10;
 }
 
@@ -193,28 +159,60 @@ body {
   font-weight: bold;
   font-size: calc(var(--celda-size) * 0.75);
   border: 0.0625rem solid #9c8400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Fichas marcadas para cambiar en el atril */
-.celda.ficha-letra.seleccionable-cambiar-seleccionada {
-  transform: translateY(-10px); /* Se levanta un poquito */
+#atril-user .celda.ficha-letra.seleccionable {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s;
+}
+
+/* 2. EL CAMBIO: Reacciona cuando la ficha tiene la clase que pone tu JS */
+#atril-user .celda.ficha-letra.cambiar-seleccionada {
+  transform: translateY(-12px); /* Se eleva */
   filter: brightness(1.2) contrast(1.1);
-  border: 2px solid #e74c3c !important; /* Borde rojo/naranja de advertencia */
-  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
-  transition: all 0.2s ease;
+  border: 2px solid #e74c3c; 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  position: relative;
+}
+
+/* Bonos (Sin !important gracias al orden de cascada inferior) */
+.celda.bono-3P {
+  background: #ff3e3e;
+}
+.celda.bono-2P {
+  background: #ff9f9f;
+}
+.celda.bono-3L {
+  background: #0066cc;
+}
+.celda.bono-2L {
+  background: #add8e6;
+}
+
+/* ==========================================================================
+   CONTROLES E INPUTS
+   ========================================================================== */
+#bolsa-zona {
+  position: absolute;
+  left: 15rem;
+  top: 15rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.icono-bolsa {
+  font-size: 4.375rem;
+  filter: drop-shadow(0 0.3125rem 0.625rem var(--negro-puro));
 }
 
 #controles-jugada {
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  background: rgba(0, 0, 0, 0.9);
   padding: 0.75rem 1.875rem;
   border-radius: var(--radio-capsula);
-  border: 0.0625rem solid rgba(241, 196, 15, 0.4);
+  border-color: rgba(241, 196, 15, 0.4);
   margin-top: 1.5rem;
 }
 
@@ -229,71 +227,43 @@ body {
 }
 
 #atril-user {
-  display: flex !important;
-  flex-direction: row !important;
-  margin: 0 !important; /* Quitamos márgenes que lo centren solo */
+  display: flex;
+  flex-direction: row;
+  margin: 0;
 }
 
 #btn-confirmar-cambio {
-  display: none !important; /* Oculto por defecto */ 
+  display: none;
   background-color: #27ae60;
   color: white;
   border: 2px solid white;
   padding: 8px 15px;
   border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap; /* Evita que el texto se quiebre */
+  white-space: nowrap;
 }
 
-#btn-confirmar-cambio:hover {
-  background: #2ecc71;
-  transform: scale(1.05);
-}
-
-.input-palabra {
+#input-palabra {
   background: transparent;
   border: none;
   border-bottom: 2px solid #555;
   color: white;
   font-size: 1.4rem;
   padding: 5px 10px;
-  width: 100%;
+  width: 25%;
   outline: none;
   transition: border-color 0.3s;
   text-align: center;
 }
 
 .input-palabra:focus {
-  border-bottom: 2px solid #f1c40f; /* Se ilumina al escribir */
+  border-bottom-color: var(--oro);
 }
-
 .input-palabra::placeholder {
   color: #888;
   font-size: 1rem;
   font-style: italic;
 }
 
-#info-posicion {
-  min-width: 8rem;
-  line-height: 1.2;
-} /* Espacio para el 10 */
-
-/* Bonos */
-.bono-3P {
-  background: #ff3e3e !important;
-}
-.bono-2P {
-  background: #ff9f9f !important;
-}
-.bono-3L {
-  background: #0066cc !important;
-}
-.bono-2L {
-  background: #add8e6 !important;
-}
-
-/* Estilos para el switch de dirección */
 .switch {
   position: relative;
   display: inline-block;
@@ -309,7 +279,6 @@ body {
   height: 0;
 }
 
-/* El carril gris */
 .switch span {
   position: absolute;
   cursor: pointer;
@@ -322,7 +291,6 @@ body {
   border-radius: 20px;
 }
 
-/* La bolita blanca */
 .switch span:before {
   position: absolute;
   content: "";
@@ -335,7 +303,6 @@ body {
   border-radius: 50%;
 }
 
-/* Color oro cuando se activa (Vertical) */
 input:checked + span {
   background-color: var(--oro, #f1c40f);
 }
@@ -344,7 +311,39 @@ input:checked + span:before {
   transform: translateX(14px);
 }
 /* ==========================================================================
-   MEDIA QUERIES (RESTAURADAS PARA EL DISEÑO VERTICAL)
+   ANIMACIONES Y ELEMENTOS FLOTANTES
+   ========================================================================== */
+.cartel-anuncio-cpu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--oro);
+  padding: 3rem 6rem;
+  border-radius: 15px;
+  border-width: 3px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  z-index: 9999;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 62.5rem) {
   #tablero {
@@ -373,7 +372,6 @@ input:checked + span:before {
   #controles-jugada {
     border-radius: 2rem;
     padding: 1.5rem;
-    flex-direction: row; /* Mantiene la línea horizontal */
     width: 95%;
     justify-content: center;
   }
