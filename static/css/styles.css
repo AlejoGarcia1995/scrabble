@@ -178,6 +178,15 @@ body {
   border-radius: var(--radio-borde);
 }
 
+/* Resaltar celda seleccionada en el tablero */
+.celda.selected {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  outline: 3px solid #f1c40f !important; /* Borde amarillo brillante */
+  outline-offset: -3px;
+  box-shadow: 0 0 15px #f1c40f;
+  z-index: 10;
+}
+
 .ficha-letra {
   background: linear-gradient(145deg, #f1d333, #b89b00);
   color: #2c1a00;
@@ -187,6 +196,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Fichas marcadas para cambiar en el atril */
+.ficha-letra.seleccionable-cambiar-seleccionada {
+  transform: translateY(-10px); /* Se levanta un poquito */
+  filter: brightness(1.2) contrast(1.1);
+  border: 2px solid #e74c3c !important; /* Borde rojo/naranja de advertencia */
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
+  transition: all 0.2s ease;
 }
 
 #controles-jugada {
@@ -230,6 +248,29 @@ body {
 #btn-confirmar-cambio:hover {
   background: #2ecc71;
   transform: scale(1.05);
+}
+
+#input-palabra {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #555;
+  color: white;
+  font-size: 1.4rem;
+  padding: 5px 10px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s;
+  text-align: center;
+}
+
+#input-palabra:focus {
+  border-bottom: 2px solid #f1c40f; /* Se ilumina al escribir */
+}
+
+#input-palabra::placeholder {
+  color: #888;
+  font-size: 1rem;
+  font-style: italic;
 }
 
 #info-posicion {
