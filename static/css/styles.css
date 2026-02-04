@@ -179,7 +179,7 @@ body {
 }
 
 /* Resaltar celda seleccionada en el tablero */
-.celda.selected {
+#celda.selected {
   background-color: rgba(255, 255, 255, 0.3) !important;
   outline: 3px solid #f1c40f !important; /* Borde amarillo brillante */
   outline-offset: -3px;
@@ -199,7 +199,7 @@ body {
 }
 
 /* Fichas marcadas para cambiar en el atril */
-.ficha-letra.seleccionable-cambiar-seleccionada {
+.celda.ficha-letra.seleccionable-cambiar-seleccionada {
   transform: translateY(-10px); /* Se levanta un poquito */
   filter: brightness(1.2) contrast(1.1);
   border: 2px solid #e74c3c !important; /* Borde rojo/naranja de advertencia */
@@ -235,6 +235,7 @@ body {
 }
 
 #btn-confirmar-cambio {
+  display: none;
   background-color: #27ae60;
   color: white;
   border: 2px solid white;
@@ -250,7 +251,7 @@ body {
   transform: scale(1.05);
 }
 
-#input-palabra {
+.input-palabra {
   background: transparent;
   border: none;
   border-bottom: 2px solid #555;
@@ -263,11 +264,11 @@ body {
   text-align: center;
 }
 
-#input-palabra:focus {
+.input-palabra:focus {
   border-bottom: 2px solid #f1c40f; /* Se ilumina al escribir */
 }
 
-#input-palabra::placeholder {
+.input-palabra::placeholder {
   color: #888;
   font-size: 1rem;
   font-style: italic;
