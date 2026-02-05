@@ -164,7 +164,7 @@ function cancelarModoCambio() {
 function actualizarBotonPasar(bolsa_restante) {
     const btnPasar = document.getElementById('btn-pasar');
     if (btnPasar) {
-        btnPasar.style.display = (bolsa_restante < 87) ? 'block' : 'none';
+        btnPasar.style.display = (bolsa_restante < 30) ? 'block' : 'none';
     }
 }
 
