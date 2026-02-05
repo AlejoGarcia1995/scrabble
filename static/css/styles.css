@@ -77,6 +77,39 @@ body {
   border-bottom: none;
 }
 
+#notificacion-juego {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 2rem;
+    border-radius: 0.9375rem;
+    border: 1px solid var(--oro);
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    z-index: 1000;
+    min-width: 15rem;
+    text-align: center;
+    
+    /* ESTADO INICIAL: OCULTO */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+/* ESTADO CUANDO SE MUESTRA */
+#notificacion-juego.show {
+    visibility: visible;
+    animation: slideAndFade 3s ease-in-out forwards;
+}
+
+@keyframes slideAndFade {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+
 #puntuacion-flotante {
   position: absolute;
   right: 15rem;
@@ -97,7 +130,10 @@ body {
 
 /* Botones Principales */
 #btn-jugar,
-#btn-confirmar-cambio {
+#btn-confirmar-cambio,
+#btn-pasar,
+#bolsa-zona,
+#btn-reiniciar {
   border: none;
   font-weight: bold;
   cursor: pointer;
@@ -105,12 +141,15 @@ body {
   text-transform: uppercase;
 }
 
-#btn-jugar {
+#btn-jugar,
+#btn-pasar,
+#btn-reiniciar {
   background: var(--oro);
   color: black;
-  padding: 10px 25px;
-  border-radius: 25px;
+  padding: 1rem 2.5rem;
+  border-radius: 2.5rem;
   font-size: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 #btn-jugar:hover {
@@ -144,7 +183,6 @@ body {
   border-radius: var(--radio-borde);
 }
 
-/* Manejo de especificidad para estados de celda (Reemplaza !important) */
 #tablero .celda.selected {
   background-color: rgba(255, 255, 255, 0.3);
   outline: 3px solid var(--oro);
@@ -163,14 +201,16 @@ body {
 
 #atril-user .celda.ficha-letra.seleccionable {
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s;
+  transition:
+    transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    filter 0.2s;
 }
 
 /* 2. EL CAMBIO: Reacciona cuando la ficha tiene la clase que pone tu JS */
 #atril-user .celda.ficha-letra.cambiar-seleccionada {
   transform: translateY(-12px); /* Se eleva */
   filter: brightness(1.2) contrast(1.1);
-  border: 2px solid #e74c3c; 
+  border: 2px solid #e74c3c;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
   z-index: 50;
   position: relative;

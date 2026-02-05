@@ -161,6 +161,24 @@ function cancelarModoCambio() {
 }
 
 // --- 5. NOTIFICACIONES Y FINALIZACIÓN ---
+function actualizarBotonPasar(bolsa_restante) {
+    const btnPasar = document.getElementById('btn-pasar');
+    if (btnPasar) {
+        btnPasar.style.display = (bolsa_restante < 87) ? 'block' : 'none';
+    }
+}
+
+async function pasarTurno() {
+    const res = await fetch('/api/pasar', { method: 'POST' });
+    const data = await res.json();
+    if (data.status === "game_over") {
+        mostrarCartelFinal(data);
+    } else {
+        mostrarCartelAnuncio("PASASTE TURNO");
+        setTimeout(turnoIA, 3000);
+    }
+
+}
 
 function mostrarCartelFinal(data) {
     const overlay = document.createElement('div');
@@ -195,14 +213,24 @@ function mostrarCartelAnuncio(t) {
     a.className = 'cartel-anuncio-cpu';
     a.innerText = t;
     document.body.appendChild(a);
-    setTimeout(() => a.remove(), 2500);
+    setTimeout(() => a.remove(), 2000);
 }
 
 function mostrarMensaje(t) {
     const s = document.getElementById("mensaje-texto");
+    const contenedor = document.getElementById("notificacion-juego");
+    
     s.innerText = t;
-    document.getElementById("notificacion-juego").classList.remove("hidden");
-    setTimeout(() => document.getElementById("notificacion-juego").classList.add("hidden"), 2000);
+    
+    // Reiniciamos la animación quitando y poniendo la clase
+    contenedor.classList.remove("show");
+    void contenedor.offsetWidth; // Truco de experto: fuerza al navegador a resetear el estado
+    contenedor.classList.add("show");
+
+    // Después de 3 segundos (duración de la animación), limpiamos la clase
+    setTimeout(() => {
+        contenedor.classList.remove("show");
+    }, 3000); 
 }
 
 // --- 6. INICIALIZACIÓN ---
